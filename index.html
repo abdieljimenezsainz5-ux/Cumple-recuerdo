@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14341f" />
+    <meta name="robots" content="noindex" />
+    <title>Álbum de cumpleaños</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314341f'/%3E%3Crect x='14' y='12' width='36' height='40' rx='3' fill='%23fffaf0'/%3E%3Crect x='18' y='16' width='28' height='24' fill='%23b8924a'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <!-- INICIO -->
+      <header class="hero">
+        <p class="eyebrow" id="fechaLugar"></p>
+        <h1 class="titulo"><span id="tituloNombre"></span></h1>
+        <p class="edad" id="edad" hidden></p>
+        <p class="lead" id="mensaje"></p>
+        <div class="hero-btns">
+          <a class="btn primary" href="#subir">📷 Subir mi foto</a>
+          <a class="btn ghost" href="#album">Ver el álbum</a>
+        </div>
+      </header>
+
+      <!-- SUBIR FOTO
+           Este es el formulario real de Netlify Forms: "data-netlify" le dice a Netlify
+           que reciba aquí las fotos. El campo "bot-field" es una trampa contra spam. -->
+      <section id="subir" class="card">
+        <h2>Comparte tu foto</h2>
+        <form id="formFoto" name="fotos-cumple" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="fotos-cumple" />
+          <p class="trampa" aria-hidden="true"><label>No llenar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+          <div id="paso1" class="dropzone">
+            <button type="button" class="btn primary big" id="btnElegir">Elegir una foto</button>
+            <button type="button" class="btn ghost" id="btnCamara">Tomar una foto ahora</button>
+            <p class="fine">JPG, PNG o WebP</p>
+          </div>
+          <input type="file" id="archivo" name="foto" accept="image/jpeg,image/png,image/webp" hidden />
+          <input type="file" id="camara" accept="image/*" capture="environment" hidden />
+
+          <div id="paso2" hidden>
+            <div class="preview">
+              <img id="previa" alt="Vista previa de tu foto" />
+              <span>Así se verá en el álbum</span>
+            </div>
+            <label class="field"><span>Tu nombre</span>
+              <input type="text" name="nombre" id="nombre" maxlength="60" placeholder="Ej. Tía Lupita" autocomplete="name" />
+            </label>
+            <label class="field"><span>Dedicatoria <em>(opcional)</em></span>
+              <textarea name="dedicatoria" id="dedicatoria" rows="3" maxlength="250" placeholder="Unas palabras para el festejado…"></textarea>
+              <small class="count" id="contador">0 / 250</small>
+            </label>
+            <div class="btn-row">
+              <button type="submit" class="btn primary" id="btnEnviar">Enviar foto</button>
+              <button type="button" class="btn ghost" id="btnOtra">Elegir otra foto</button>
+              <button type="button" class="btn link" id="btnCancelar">Cancelar</button>
+            </div>
+          </div>
+
+          <p class="error" id="error" role="alert" hidden></p>
+        </form>
+
+        <div id="exito" class="exito" role="status" hidden>
+          <div class="check" aria-hidden="true">✓</div>
+          <h3>¡Gracias, <span id="exitoNombre"></span>!</h3>
+          <p>Tu foto fue enviada. Aparecerá en el álbum cuando el anfitrión la publique.</p>
+          <p class="aviso" id="avisoPrueba" hidden><strong>Modo prueba:</strong> en esta vista previa no se envía nada. Al publicar la página en Netlify, la foto sí llegará.</p>
+          <div class="btn-row center">
+            <button type="button" class="btn primary" id="btnNueva">Subir otra foto</button>
+            <a class="btn ghost" href="#album">Ver el álbum</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÁLBUM -->
+      <section id="album">
+        <h2 class="titulo-seccion">El álbum de la fiesta</h2>
+        <div class="muro" id="muro"></div>
+        <div class="vacio" id="vacio" hidden>
+          <div class="vacio-marco" aria-hidden="true"></div>
+          <h3>El álbum aún está vacío</h3>
+          <p>Las fotos aparecerán aquí en cuanto el anfitrión las publique.</p>
+        </div>
+      </section>
+
+      <footer class="brand">
+        <p class="brand-line">Tu celebración también puede tener su propio álbum digital.</p>
+        <p class="brand-by">Hecho por <strong>Tap Nova Studio</strong></p>
+      </footer>
+    </main>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+      <div class="lb-card">
+        <button type="button" class="lb-close" id="lbCerrar" aria-label="Cerrar">×</button>
+        <img id="lbImg" alt="" />
+        <div class="lb-texto"><span class="p-nombre" id="lbNombre"></span><span class="p-dedic" id="lbDedic"></span><time class="p-fecha" id="lbFecha"></time></div>
+        <div class="lb-nav">
+          <button type="button" class="btn ghost small" id="lbPrev">← Anterior</button>
+          <span id="lbPos"></span>
+          <button type="button" class="btn ghost small" id="lbNext">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="fotos.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
